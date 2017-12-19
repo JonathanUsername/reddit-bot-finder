@@ -16,7 +16,10 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.reddit.com/*comments*"
+        "https://www.reddit.com/r/politics/comments*",
+        "https://www.reddit.com/r/ukpolitics/comments*",
+        "https://www.reddit.com/r/unitedkingdom/comments*",
+        "https://www.reddit.com/r/worldnews/comments*"
       ],
       "js": [
         "src/inject/inject.js"
