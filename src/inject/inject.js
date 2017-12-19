@@ -3,12 +3,15 @@ chrome.extension.sendMessage({}, function(response) {
 		if (document.readyState === "complete") {
 			clearInterval(readyStateCheckInterval);
 
+			var POL_SUBS = new Set(['politics', 'ukpolitics', 'unitedkingdom']);
+
 			var authorTags = document.querySelectorAll('.author');
 			var names = Array.from(new Set(Array.from(authorTags)));
-			var promises = names.map(({innerText}) => fetch(`/user/${innerText}/overview.json`).then(r => r.json()));
-			Promise.all(promises).then((values) => values.map(processResponse));
-
-			var POL_SUBS = new Set(['politics', 'ukpolitics', 'unitedkingdom']);
+			var promises = names.map(({innerText}) =>
+				fetch(`/user/${innerText}/overview.json`)
+					.then(r => r.json())
+					.then(processResponse)
+			);
 
 			function accumulateSubreddits(sum, {score, subreddit}) {
 			    if (sum[subreddit]) {
@@ -60,26 +63,34 @@ chrome.extension.sendMessage({}, function(response) {
 			    elem.appendChild(div);
 			}
 
-			function processResponse({data}){
-			    if (!data) {
-			        return;
-			    }
-			    var {children} = data;
-			    var name = children[0].data.author;
+			function processResponse(response){
+				try {
+					if (!response) {
+						return;
+					}
+					var {data} = response;
+					if (!data) {
+						return;
+					}
+					var {children} = data;
+					var name = children[0].data.author;
 
-			    var dataArr = children.map(i => i.data);
-			    var subbredditCounts = dataArr.reduce(countPostsInSubreddits, {});
-			    var subbredditScores = dataArr.reduce(accumulateSubreddits, {});
+					var dataArr = children.map(i => i.data);
+					var subbredditCounts = dataArr.reduce(countPostsInSubreddits, {});
+					var subbredditScores = dataArr.reduce(accumulateSubreddits, {});
 
-			    var sorted = objToSortedTuples(subbredditCounts);
-			    var mostlyPostsIn = sorted.slice(0, 4);
-			    var likelyBot = botLikelihood(mostlyPostsIn, subbredditScores);
+					var sorted = objToSortedTuples(subbredditCounts);
+					var mostlyPostsIn = sorted.slice(0, 4);
+					var likelyBot = botLikelihood(mostlyPostsIn, subbredditScores);
 
-			    if (!likelyBot) {
-			        return;
-			    }
+					if (!likelyBot) {
+						return;
+					}
 
-			    findAuthorTags(name).forEach(appendTag);
+					findAuthorTags(name).forEach(appendTag);
+				} catch (e) {
+					console.error(e);
+				}
 			}
 		}
 	}, 10);
