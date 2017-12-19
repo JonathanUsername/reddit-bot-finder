@@ -1,6 +1,8 @@
 # reddit-bot-finder
 Quick and dirty chrome extension to point out likely bots/trolls/shills/morons.
 
+![image](https://user-images.githubusercontent.com/7237525/34134950-a082972c-e455-11e7-9e51-b26aa4446cb0.png)
+
 Political subreddits are full of bots and trolls and idiots. The relative anonymity of reddit is useful for this, but since I usually manually look through someone's post history, I thought it might be nicer to automate it.
 
 ## How to install
