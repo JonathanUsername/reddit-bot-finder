@@ -21,4 +21,4 @@ Now when you go to comments pages in reddit in Chrome, it will tag likely bots.
 I just see if they mostly only post in political subreddits ('politics', 'ukpolitics', 'unitedkingdom') and if their score there is generally low.
 I'd like to make a fancier algorithm, but I did this in about an hour at 11pm on a Monday.
 
-Yes it probably just points out people that don't follow the reddit groupthink. Yes that could be bad. But we're talking about politics here, it's basically the science of groupthink. I'm just trying to automate my prejudices.
+Yes it probably just points out people that don't follow the reddit groupthink. Yes that could be bad, but we're talking about politics here, it's basically the science of groupthink. I'm just trying to automate my prejudices.
